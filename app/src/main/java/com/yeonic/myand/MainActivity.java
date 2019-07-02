@@ -15,11 +15,16 @@ import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.OverlayImage;
+import com.naver.maps.map.overlay.PolylineOverlay;
 import com.naver.maps.map.util.MarkerIcons;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback{
 
@@ -46,7 +51,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng knu = new LatLng(35.945482,126.682121);
         LatLng kch = new LatLng(35.967679,126.736828);
         LatLng wku = new LatLng(35.970614,126.954628);
-        LatLng kbu= new LatLng(35.844434,127.129299);
+        LatLng jbu= new LatLng(35.844434,127.129299);
 
         LatLng mid= new LatLng(35.865052,126.886189);
 
@@ -69,7 +74,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         Marker marker4 = new Marker();
         marker4.setIcon(MarkerIcons.YELLOW);
-        marker4.setPosition(kbu);
+        marker4.setPosition(jbu);
         marker4.setMap(naverMap);
 
 
@@ -112,6 +117,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 return (CharSequence)infoWindow.getMarker().getTag();
             }
         });
+
+        PolylineOverlay polyline = new PolylineOverlay();
+        polyline.setCoords(Arrays.asList(knu,kch,wku,jbu));
+        polyline.setMap(naverMap);
+        polyline.setWidth(10);
+        polyline.setColor(Color.GREEN);
+
+
+
 
 
 
