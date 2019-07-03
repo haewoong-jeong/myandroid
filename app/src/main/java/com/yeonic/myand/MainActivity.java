@@ -17,17 +17,21 @@ import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.overlay.PolylineOverlay;
 import com.naver.maps.map.util.MarkerIcons;
+import java.util.List;
 
-
+import android.view.View;
+import android.widget.Button;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback{
 
+    boolean check = true;
     public  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
@@ -58,6 +62,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         CameraPosition cameraPosition = new CameraPosition(mid, 9);
         naverMap.setCameraPosition(cameraPosition);
 
+
+
         final Marker marker1 = new Marker();
         marker1.setPosition(knu);
         marker1.setMap(naverMap);
@@ -77,52 +83,90 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         marker4.setPosition(jbu);
         marker4.setMap(naverMap);
 
-
-        final InfoWindow infoWindow = new InfoWindow();
-
-        marker1.setTag("군산대학교");
-        marker1.setOnClickListener(overlay -> {
-            // 마커를 클릭할 때 정보창을 엶
-            infoWindow.open(marker1);
-            return true;
-        });
-
-        marker2.setTag("군산시청");
-        marker2.setOnClickListener(overlay -> {
-            // 마커를 클릭할 때 정보창을 엶
-            infoWindow.open(marker2);
-            return true;
-        });
-
-        marker3.setTag("원광대학교");
-        marker3.setOnClickListener(overlay -> {
-            // 마커를 클릭할 때 정보창을 엶
-            infoWindow.open(marker3);
-            return true;
-        });
-
-        marker4.setTag("전북대학교");
-        marker4.setOnClickListener(overlay -> {
-            // 마커를 클릭할 때 정보창을 엶
-            infoWindow.open(marker4);
-            return true;
-        });
-
-
-        infoWindow.setAdapter(new InfoWindow.DefaultTextAdapter(this) {
+        final InfoWindow knu_info = new InfoWindow();
+        knu_info.setAdapter(new InfoWindow.DefaultTextAdapter(this) {
             @NonNull
             @Override
             public CharSequence getText(@NonNull InfoWindow infoWindow) {
-                // 정보 창이 열린 마커의 tag를 텍스트로 노출하도록 반환
-                return (CharSequence)infoWindow.getMarker().getTag();
+                return "군산대학교";
             }
         });
+
+        final InfoWindow kch_info = new InfoWindow();
+        kch_info.setAdapter(new InfoWindow.DefaultTextAdapter(this) {
+            @NonNull
+            @Override
+            public CharSequence getText(@NonNull InfoWindow infoWindow) {
+                return "군산시청";
+            }
+        });
+
+        final InfoWindow wku_info = new InfoWindow();
+        wku_info.setAdapter(new InfoWindow.DefaultTextAdapter(this) {
+            @NonNull
+            @Override
+            public CharSequence getText(@NonNull InfoWindow infoWindow) {
+                return "원광대학교";
+            }
+        });
+
+        final InfoWindow jbu_info = new InfoWindow();
+        jbu_info.setAdapter(new InfoWindow.DefaultTextAdapter(this) {
+            @NonNull
+            @Override
+            public CharSequence getText(@NonNull InfoWindow infoWindow) {
+                return "전북대학교";
+            }
+        });
+
+        knu_info.open(marker1);
+        kch_info.open(marker2);
+        wku_info.open(marker3);
+        jbu_info.open(marker4);
 
         PolylineOverlay polyline = new PolylineOverlay();
         polyline.setCoords(Arrays.asList(knu,kch,wku,jbu));
         polyline.setMap(naverMap);
-        polyline.setWidth(10);
-        polyline.setColor(Color.GREEN);
+        polyline.setWidth(11);
+        polyline.setColor(Color.RED);
+
+        Button btn = findViewById(R.id.button5);
+
+        btn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view) {
+
+
+                if(check==true) {
+
+                    knu_info.close();
+                    wku_info.close();
+                    kch_info.close();
+                    jbu_info.close();
+                    polyline.setMap(null);
+                    marker1.setMap(null);
+                    marker2.setMap(null);
+                    marker3.setMap(null);
+                    marker4.setMap(null);
+
+                    check =false;
+                }
+                else if(check==false)
+                {
+                    polyline.setMap(naverMap);
+                    marker1.setMap(naverMap);
+                    marker2.setMap(naverMap);
+                    marker3.setMap(naverMap);
+                    marker4.setMap(naverMap);
+                    knu_info.open(marker1);
+                    kch_info.open(marker2);
+                    wku_info.open(marker3);
+                    jbu_info.open(marker4);
+
+                    check = true;
+                }
+
+            }
+        });
 
 
 
