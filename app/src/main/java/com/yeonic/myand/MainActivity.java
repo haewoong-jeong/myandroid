@@ -19,6 +19,9 @@ import com.naver.maps.map.overlay.PolylineOverlay;
 import com.naver.maps.map.util.MarkerIcons;
 import java.util.List;
 
+import android.graphics.Point;
+import android.graphics.PointF;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.graphics.Color;
@@ -29,13 +32,14 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback{
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
     boolean check = true;
     public  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_main);
+
         
         FragmentManager fm = getSupportFragmentManager();
         MapFragment mapFragment = (MapFragment)fm.findFragmentById(R.id.map);
@@ -45,6 +49,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
         
         mapFragment.getMapAsync(this);
+
+
         
     }
 
@@ -83,6 +89,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         marker4.setPosition(jbu);
         marker4.setMap(naverMap);
 
+
+
         final InfoWindow knu_info = new InfoWindow();
         knu_info.setAdapter(new InfoWindow.DefaultTextAdapter(this) {
             @NonNull
@@ -119,6 +127,25 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+
+        final InfoWindow Lal = new InfoWindow();
+        Lal.setAdapter(new InfoWindow.DefaultTextAdapter(this) {
+            @NonNull
+            @Override
+            public CharSequence getText(@NonNull InfoWindow infoWindow) {
+
+                String point =Lal.getPosition().latitude+" , "+Lal.getPosition().longitude ;
+
+                return point;
+            }
+        });
+
+        naverMap.setOnMapLongClickListener((point, crood)->{
+            LatLng la = crood;
+            Lal.setPosition(la);
+            Lal.open(naverMap);
+        });
+
         knu_info.open(marker1);
         kch_info.open(marker2);
         wku_info.open(marker3);
@@ -129,6 +156,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         polyline.setMap(naverMap);
         polyline.setWidth(11);
         polyline.setColor(Color.RED);
+
+
 
         Button btn = findViewById(R.id.button5);
 
@@ -165,16 +194,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     check = true;
                 }
 
+
             }
+
         });
 
-
-
-
-
-
-
-
     }
-    
+
 }
